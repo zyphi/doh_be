@@ -23,7 +23,11 @@ export const globalMiddleware = [
 	}),
 	express.urlencoded(),
 	express.json(),
-	express.static(path.resolve('../frontend/dist'))
+	express.static(
+		(process.env.DEV as string) === 'true'
+			? path.resolve('../frontend/dist')
+			: path.resolve('./frontend')
+	)
 ];
 
 export const storageMiddleware = [
