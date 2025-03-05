@@ -10,7 +10,8 @@
 	"scripts": {
 		"dev": "nodemon -r dotenv/config src/index.ts",
 		"build": "tsc && tsc-alias",
-		"start": "node dist/src/index.js"
+		"start": "node --env-file=.env dist/src/index.js",
+		"start:render": "node dist/src/index.js"
 	},
 	"author": "Claudio Santancini",
 	"license": "CC-BY-NC-SA-4.0",

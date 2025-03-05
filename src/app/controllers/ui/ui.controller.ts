@@ -7,9 +7,13 @@ export const uiController = (
 	next: NextFunction
 ) => {
 	if (!['api', 'storage'].includes(req.params.any[1])) {
-		res
-			.status(200)
-			.sendFile('index.html', { root: path.resolve('../frontend/dist') });
+		res.status(200).sendFile('index.html', {
+			root: path.resolve(
+				(process.env.DEV as string) === 'true'
+					? '../frontend/dist'
+					: './frontend'
+			)
+		});
 		return;
 	}
 	next();
