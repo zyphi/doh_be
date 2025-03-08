@@ -51,3 +51,8 @@ export const coreUpdateUser = async (updatedUser: IUpdatedUser) => {
 	});
 	return user ? normalizeDocument(user) : null;
 };
+
+export const coreGetUsername = async (id: string) => {
+	const user = await User.findById(id);
+	return user ? user.name : null;
+};

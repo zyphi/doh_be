@@ -6,7 +6,8 @@ import {
 	coreFindUserById,
 	coreDeleteUser,
 	coreFindUserByEmail,
-	coreUpdateUser
+	coreUpdateUser,
+	coreGetUsername
 } from './core/index.core';
 
 export const createUser = async (
@@ -50,4 +51,8 @@ export const updateUser = async (updatedUser: IUpdatedUser) => {
 
 export const deleteUser = async (id: string) => {
 	return await coreDeleteUser(id);
+};
+
+export const getUsername = async (id: string) => {
+	return await coreGetUsername(id);
 };

@@ -115,6 +115,22 @@ export const v0UpdateRecipeController = () => {
 		) => {
 			const newRecipe = req.body;
 
+			const storedRecipe = await getRecipeById(req.params.id);
+
+			if (!storedRecipe) {
+				return next({
+					message: 'Recipe not found',
+					statusCode: 404
+				});
+			}
+
+			if ((req.user as IStoredUser)._id !== storedRecipe.userId) {
+				return next({
+					message: 'Unauthorized',
+					statusCode: 401
+				});
+			}
+
 			const updatedRecipe = await updateRecipe(req.params.id, {
 				...newRecipe,
 				userId: (req.user as IStoredUser)._id

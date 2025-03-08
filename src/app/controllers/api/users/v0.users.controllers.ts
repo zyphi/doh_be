@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { updateUser, deleteUser } from '#features/database/database.users';
+import {
+	updateUser,
+	deleteUser,
+	getUsername
+} from '#features/database/database.users';
 import {
 	getV0ValidationUpdatePassword,
 	getV0ValidationUpdateUser
@@ -30,6 +34,31 @@ export const v0GetUserController = () => {
 			success: true,
 			message: 'Successfully fetched user',
 			data: { user: requestUser }
+		});
+	};
+};
+
+export const v0GetUsernameController = () => {
+	return async (
+		req: APIReq<{ id: string }>,
+		res: APIRes<{ username: string }>,
+		next: NextFunction
+	) => {
+		const userId = req.params.id;
+
+		const username = await getUsername(userId);
+
+		if (!username) {
+			return next({
+				statusCode: 404,
+				message: 'Username not found'
+			});
+		}
+
+		res.status(200).json({
+			success: true,
+			message: 'Successfully fetched user',
+			data: { username }
 		});
 	};
 };
