@@ -51,7 +51,7 @@ export const v0SignupController = () => {
 					);
 
 					if (externalStorageResponse && 'url' in externalStorageResponse) {
-						storedPhotoUrl = externalStorageResponse.url;
+						storedPhotoUrl = externalStorageResponse.secure_url;
 					} else {
 						await cleanUpUserProfilePictures(req.file.path);
 						return next({

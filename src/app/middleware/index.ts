@@ -18,7 +18,7 @@ export const globalMiddleware = [
 	helmet.contentSecurityPolicy({
 		directives: {
 			scriptSrc: ["'self'", "'unsafe-inline'", 'https://cdn.jsdelivr.net'],
-			'img-src': ["'self'", 'data:', 'blob:']
+			'img-src': ["'self'", 'data:', 'blob:', 'https://*.cloudinary.com']
 		}
 	}),
 	express.urlencoded(),

@@ -234,7 +234,7 @@ export const v0UploadPhotosController = () => {
 						return uploadToExternalStorage(file.path);
 					})
 				)
-			).map(photo => photo.url);
+			).map(photo => photo.secure_url);
 
 			let storedRecipe: IStoredRecipe | null = null;
 			if (recipeId === '_default') {
