@@ -12,6 +12,7 @@ import { APIReq, APIRes } from '#types/types.api';
 import {
 	cleanUpUserProfilePictures,
 	compressPicture,
+	uploadToExternalStorage,
 	uploadUserProfilePicture
 } from '#features/fileStorage';
 
@@ -32,7 +33,6 @@ export const v0SignupController = () => {
 		) => {
 			try {
 				const { email, name, password } = req.body;
-
 				const previouslyStoredUser = await findUserByEmail(email);
 				if (previouslyStoredUser) {
 					if (req.file) {
@@ -44,21 +44,39 @@ export const v0SignupController = () => {
 					});
 				}
 
+				let storedPhotoUrl = '';
+				if (req.file) {
+					const externalStorageResponse = await uploadToExternalStorage(
+						req.file.path
+					);
+
+					if (externalStorageResponse && 'url' in externalStorageResponse) {
+						storedPhotoUrl = externalStorageResponse.url;
+					} else {
+						await cleanUpUserProfilePictures(req.file.path);
+						return next({
+							message: 'Could not upload profile picture',
+							statusCode: 400
+						});
+					}
+				}
+
 				const storedUser = await createUser(
 					email,
 					name,
-					req.file ? req.file.filename : '',
+					storedPhotoUrl,
 					password
 				);
 
 				if (!storedUser) {
-					if (req.file) {
-						await cleanUpUserProfilePictures(req.file.path);
-					}
 					return next({
 						message: 'Could not create user',
 						statusCode: 400
 					});
+				}
+
+				if (req.file) {
+					await cleanUpUserProfilePictures(req.file.path);
 				}
 
 				const authenticationToken = generateAccessToken(storedUser._id);
@@ -76,6 +94,7 @@ export const v0SignupController = () => {
 					data: { token: authenticationToken }
 				});
 			} catch (error: any) {
+				console.log(error);
 				if (req.file) {
 					await cleanUpUserProfilePictures(req.file.path);
 				}

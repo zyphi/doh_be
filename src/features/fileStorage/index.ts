@@ -4,7 +4,9 @@ import {
 	coreUploadFile,
 	coreRemoveFile,
 	coreCompressPicture,
-	coreUploadMultipleFiles
+	coreUploadMultipleFiles,
+	coreUploadToExternalStorage,
+	coreDeleteFromExternalStorage
 } from './core/index.core';
 
 export const uploadUserProfilePicture = coreUploadFile(
@@ -14,6 +16,17 @@ export const uploadUserProfilePicture = coreUploadFile(
 	path.join('storage', 'users'),
 	'profilePicture'
 );
+
+export const uploadToExternalStorage = async (imagePath: string) => {
+	return await coreUploadToExternalStorage(
+		process.env.CLOUDINARY_FOLDER as string,
+		imagePath
+	);
+};
+
+export const deleteFromExternalStorage = async (publicId: string) => {
+	return await coreDeleteFromExternalStorage(publicId);
+};
 
 export const uploadRecipePhotos = coreUploadMultipleFiles(
 	parseInt(process.env.UPLOAD_SIZE_LIMIT as string),
@@ -31,5 +44,5 @@ export const compressPicture = (inputPath: string) => {
 
 export const cleanUpUserProfilePictures = async (path: string) => {
 	await coreRemoveFile(path);
-	await coreRemoveFile(`${path}__preview`);
+	// await coreRemoveFile(`${path}__preview`);
 };

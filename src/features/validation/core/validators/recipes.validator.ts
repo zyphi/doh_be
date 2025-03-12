@@ -2,8 +2,9 @@ import { body, query } from 'express-validator';
 import { setRequestBody } from '../index.core';
 
 export const coreV0ValidationGetRecipes = () => [
-	query('includeShared').escape().isBoolean(),
-	query('nameFilter').escape().isString(),
+	query('nameFilters').escape().isString(),
+	query('getPrivate').escape().isBoolean(),
+	query('getPublic').escape().isBoolean(),
 	setRequestBody
 ];
 

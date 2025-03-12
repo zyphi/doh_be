@@ -1,9 +1,16 @@
 import multer from 'multer';
+import cloudinary from 'cloudinary';
 import path from 'path';
 import { unlink, mkdir, rename } from 'fs/promises';
 import { existsSync } from 'fs';
 import { v4 } from 'uuid';
 import { spawn } from 'child_process';
+
+cloudinary.v2.config({
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_SECRET
+});
 
 const testFfmpegExecutable = () => {
 	return new Promise<boolean>((resolve, reject) => {
@@ -55,6 +62,21 @@ export const coreUploadFile = (
 		limits: { fileSize: fileSizeLimit, files: filesNumberLimit },
 		fileFilter: fileFilter(allowedMimeTypes)
 	}).single(fieldName);
+};
+
+export const coreUploadToExternalStorage = async (
+	destinationFolder: string,
+	imagePath: string
+) => {
+	return await cloudinary.v2.uploader.upload(imagePath, {
+		folder: destinationFolder,
+		overwrite: true,
+		secure: true
+	});
+};
+
+export const coreDeleteFromExternalStorage = async (publicId: string) => {
+	return await cloudinary.v2.uploader.destroy(publicId);
 };
 
 export const coreUploadMultipleFiles = (
