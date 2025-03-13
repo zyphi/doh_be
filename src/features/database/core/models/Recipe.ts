@@ -204,7 +204,6 @@ export const coreCreateRecipe = async (newRecipe: Omit<IRecipe, '_id'>) => {
 		return normalizeDocument(await Recipe.create(newRecipe));
 	} catch (_) {
 		console.error('Failed to create recipe', _);
-		console.log(newRecipe);
 		return null;
 	}
 };

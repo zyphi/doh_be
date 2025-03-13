@@ -22,7 +22,6 @@ export const v0SetNewPasswordController = () => {
 				const { password, confirmPassword, 'reset-token': token } = req.body;
 
 				if (password !== confirmPassword) {
-					console.log(password, confirmPassword);
 					return next({
 						message: 'Passwords do not match',
 						statusCode: 400
