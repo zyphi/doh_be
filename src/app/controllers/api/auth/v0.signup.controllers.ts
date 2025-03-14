@@ -19,12 +19,12 @@ import {
 export const v0SignupController = () => {
 	return [
 		uploadUserProfilePicture,
-		(req: Request, _: any, next: NextFunction) => {
-			if (req.file) {
-				compressPicture(req.file.path); // not awaiting/catching this on purpose!
-			}
-			next();
-		},
+		// (req: Request, _: any, next: NextFunction) => {
+		// 	if (req.file) {
+		// 		compressPicture(req.file.path); // not awaiting/catching this on purpose!
+		// 	}
+		// 	next();
+		// },
 		...getV0ValidationSignup(),
 		async (
 			req: APIReq<{}, ISignupUser>,

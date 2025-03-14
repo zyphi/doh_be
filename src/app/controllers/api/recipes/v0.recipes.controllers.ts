@@ -207,14 +207,14 @@ export const v0DeleteRecipeController = () => {
 export const v0UploadPhotosController = () => {
 	return [
 		uploadRecipePhotos,
-		(req: Request, _: any, next: NextFunction) => {
-			if (req.files && Array.isArray(req.files)) {
-				req.files.forEach(
-					file => compressPicture(file.path) // not awaiting/catching this on purpose!
-				);
-			}
-			next();
-		},
+		// (req: Request, _: any, next: NextFunction) => {
+		// 	if (req.files && Array.isArray(req.files)) {
+		// 		req.files.forEach(
+		// 			file => compressPicture(file.path) // not awaiting/catching this on purpose!
+		// 		);
+		// 	}
+		// 	next();
+		// },
 		async (
 			req: APIReq<{ recipeId: string }, { recipe: IRecipe }>,
 			res: APIRes<{ updatedRecipe: IStoredRecipe }>,
